@@ -1,0 +1,8 @@
+{"level":"info","message":"✅  Firebase initialized successfully","service":"pulseaid-api","timestamp":"2026-06-05T21:56:54.921Z"}
+{"level":"info","message":"✅  Socket.io handlers registered","service":"pulseaid-api","timestamp":"2026-06-05T21:56:54.926Z"}
+{"level":"info","message":"🚀  PulseAid API running on port 5001 [development]","service":"pulseaid-api","timestamp":"2026-06-05T21:56:54.929Z"}
+{"level":"info","message":"SIGINT received. Shutting down gracefully…","service":"pulseaid-api","timestamp":"2026-06-05T21:59:04.001Z"}
+{"level":"info","message":"✅  Firebase initialized successfully","service":"pulseaid-api","timestamp":"2026-06-05T22:01:57.492Z"}
+{"level":"info","message":"✅  Socket.io handlers registered","service":"pulseaid-api","timestamp":"2026-06-05T22:01:57.497Z"}
+{"level":"info","message":"🚀  PulseAid API running on port 5001 [development]","service":"pulseaid-api","timestamp":"2026-06-05T22:01:57.500Z"}
+{"level":"info","message":"SIGINT received. Shutting down gracefully…","service":"pulseaid-api","timestamp":"2026-06-05T22:21:34.425Z"}
