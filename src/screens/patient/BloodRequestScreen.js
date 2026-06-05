@@ -7,10 +7,35 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 
 export default function BloodRequestScreen({ navigation }) {
+  const [bloodGroup, setBloodGroup] = useState("O+");
+  const [units, setUnits] = useState("2 Units");
   const [requestType, setRequestType] = useState("Emergency");
+
+  const [showBloodList, setShowBloodList] = useState(false);
+  const [showUnitList, setShowUnitList] = useState(false);
+
+  const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const unitOptions = ["1 Unit", "2 Units", "3 Units", "4 Units", "5 Units"];
+
+  const handleSubmitRequest = () => {
+    Alert.alert(
+      "Request Submitted",
+      "Your blood request has been noted. Nearby donors are being notified.",
+      [
+        {
+          text: "OK",
+          onPress: () =>
+            navigation.navigate("PatientHome", {
+              requestSubmitted: true,
+            }),
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -27,58 +52,102 @@ export default function BloodRequestScreen({ navigation }) {
           <View style={{ width: 28 }} />
         </View>
 
-        <View style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => setShowBloodList(!showBloodList)}
+        >
           <View style={styles.leftRow}>
             <Text style={styles.icon}>🩸</Text>
             <View>
               <Text style={styles.label}>Blood Group</Text>
-              <Text style={styles.value}>O+</Text>
+              <Text style={styles.value}>{bloodGroup}</Text>
             </View>
           </View>
           <Text style={styles.arrow}>›</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.card}>
+        {showBloodList && (
+          <View style={styles.optionBox}>
+            {bloodGroups.map((group) => (
+              <TouchableOpacity
+                key={group}
+                style={styles.optionItem}
+                onPress={() => {
+                  setBloodGroup(group);
+                  setShowBloodList(false);
+                }}
+              >
+                <Text style={styles.optionText}>{group}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => setShowUnitList(!showUnitList)}
+        >
           <View style={styles.leftRow}>
             <Text style={styles.icon}>🩸</Text>
             <View>
               <Text style={styles.label}>Units Needed</Text>
-              <Text style={styles.value}>2 Units</Text>
+              <Text style={styles.value}>{units}</Text>
             </View>
           </View>
           <Text style={styles.arrow}>›</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.card}>
-          <View style={styles.leftRow}>
-            <Text style={styles.icon}>🏥</Text>
-            <View>
-              <Text style={styles.label}>Hospital Name</Text>
-              <Text style={styles.value}>City Care Hospital</Text>
-            </View>
+        {showUnitList && (
+          <View style={styles.optionBox}>
+            {unitOptions.map((unit) => (
+              <TouchableOpacity
+                key={unit}
+                style={styles.optionItem}
+                onPress={() => {
+                  setUnits(unit);
+                  setShowUnitList(false);
+                }}
+              >
+                <Text style={styles.optionText}>{unit}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        <View style={styles.inputCard}>
+          <Text style={styles.icon}>🏥</Text>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Hospital Name</Text>
+            <TextInput
+              placeholder="Enter hospital name"
+              placeholderTextColor="#8b8b8b"
+              style={styles.textInput}
+            />
           </View>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.leftRow}>
-            <Text style={styles.icon}>📍</Text>
-            <View>
-              <Text style={styles.label}>Location</Text>
-              <Text style={styles.value}>Ahmedabad, Gujarat</Text>
-            </View>
+        <View style={styles.inputCard}>
+          <Text style={styles.icon}>📍</Text>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Location</Text>
+            <TextInput
+              placeholder="Select or enter location"
+              placeholderTextColor="#8b8b8b"
+              style={styles.textInput}
+            />
           </View>
-          <Text style={styles.arrow}>›</Text>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.leftRow}>
-            <Text style={styles.icon}>📅</Text>
-            <View>
-              <Text style={styles.label}>Need by Date & Time</Text>
-              <Text style={styles.value}>25 May 2025, 10:00 AM</Text>
-            </View>
+        <View style={styles.inputCard}>
+          <Text style={styles.icon}>📅</Text>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Need by Date & Time</Text>
+            <TextInput
+              placeholder="Example: 25 May 2025, 10:00 AM"
+              placeholderTextColor="#8b8b8b"
+              style={styles.textInput}
+            />
           </View>
-          <Text style={styles.calendar}>▣</Text>
         </View>
 
         <Text style={styles.sectionTitle}>Request Type</Text>
@@ -136,13 +205,13 @@ export default function BloodRequestScreen({ navigation }) {
         <TextInput
           style={styles.notesBox}
           placeholder="Please help urgently."
-          placeholderTextColor="#111827"
+          placeholderTextColor="#8b8b8b"
           multiline
         />
 
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => navigation.navigate("PatientHome")}
+          onPress={handleSubmitRequest}
         >
           <Text style={styles.submitText}>Submit Request</Text>
         </TouchableOpacity>
@@ -225,9 +294,52 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
 
-  calendar: {
-    fontSize: 22,
-    color: "#ef233c",
+  optionBox: {
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#eadede",
+    marginTop: -5,
+    marginBottom: 13,
+    paddingVertical: 8,
+    elevation: 2,
+  },
+
+  optionItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f5e5e5",
+  },
+
+  optionText: {
+    fontSize: 16,
+    color: "#111827",
+    fontWeight: "800",
+  },
+
+  inputCard: {
+    minHeight: 72,
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#eadede",
+    paddingHorizontal: 14,
+    marginBottom: 13,
+    flexDirection: "row",
+    alignItems: "center",
+    elevation: 2,
+  },
+
+  inputWrapper: {
+    flex: 1,
+  },
+
+  textInput: {
+    fontSize: 16,
+    color: "#111827",
+    fontWeight: "700",
+    paddingVertical: 2,
   },
 
   sectionTitle: {

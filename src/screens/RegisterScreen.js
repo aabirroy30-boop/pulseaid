@@ -16,6 +16,17 @@ export default function RegisterScreen({ navigation }) {
 
   const roles = ["Donor", "Patient", "Hospital", "NGO"];
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const handleCreateAccount = () => {
+  if (selectedRole === "Patient") {
+    navigation.replace("PatientHome");
+  } else if (selectedRole === "Hospital") {
+    navigation.replace("HospitalHome");
+  }else if (selectedRole === "Donor") {
+    navigation.replace("DonorHome");
+  } else {
+    alert(`${selectedRole} module will be added soon`);
+  }
+};
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -89,7 +100,7 @@ export default function RegisterScreen({ navigation }) {
 
         <TouchableOpacity
   style={styles.signupButton}
-  onPress={() => navigation.navigate("PatientHome")}
+  onPress={handleCreateAccount}
 >
           <Text style={styles.signupButtonText}>Create Account</Text>
         </TouchableOpacity>

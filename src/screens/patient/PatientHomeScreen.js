@@ -7,8 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 export default function PatientHomeScreen({ navigation }) {
+  const route = useRoute();
+  const requestSubmitted = route.params?.requestSubmitted || false;
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#ef233c" />
@@ -25,12 +29,24 @@ export default function PatientHomeScreen({ navigation }) {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
+        {requestSubmitted && (
+          <View style={styles.notificationCard}>
+            <Text style={styles.notificationTitle}>Request Received ✅</Text>
+            <Text style={styles.notificationText}>
+              Your blood request has been noted. Nearby donors are being notified.
+            </Text>
+          </View>
+        )}
+
         <View style={styles.requestCard}>
           <View>
             <Text style={styles.cardTitle}>Need Blood?</Text>
             <Text style={styles.cardSubtitle}>Request blood in emergency</Text>
 
-            <TouchableOpacity style={styles.requestButton} onPress={() => navigation.navigate("BloodRequest")}>
+            <TouchableOpacity
+              style={styles.requestButton}
+              onPress={() => navigation.navigate("BloodRequest")}
+            >
               <Text style={styles.requestButtonText}>Request Now</Text>
             </TouchableOpacity>
           </View>
@@ -49,12 +65,10 @@ export default function PatientHomeScreen({ navigation }) {
           <View style={styles.bloodGroupBox}>
             <Text style={styles.bloodGroup}>A+</Text>
           </View>
-
           <View style={styles.donorInfo}>
             <Text style={styles.donorName}>Rahul Sharma</Text>
             <Text style={styles.distance}>1.2 km away</Text>
           </View>
-
           <TouchableOpacity style={styles.callButton}>
             <Text style={styles.callText}>☎</Text>
           </TouchableOpacity>
@@ -64,12 +78,10 @@ export default function PatientHomeScreen({ navigation }) {
           <View style={styles.bloodGroupBox}>
             <Text style={styles.bloodGroup}>O+</Text>
           </View>
-
           <View style={styles.donorInfo}>
             <Text style={styles.donorName}>Neha Patel</Text>
             <Text style={styles.distance}>2.3 km away</Text>
           </View>
-
           <TouchableOpacity style={styles.callButton}>
             <Text style={styles.callText}>☎</Text>
           </TouchableOpacity>
@@ -79,12 +91,10 @@ export default function PatientHomeScreen({ navigation }) {
           <View style={styles.bloodGroupBox}>
             <Text style={styles.bloodGroup}>B+</Text>
           </View>
-
           <View style={styles.donorInfo}>
             <Text style={styles.donorName}>Amit Verma</Text>
             <Text style={styles.distance}>3.1 km away</Text>
           </View>
-
           <TouchableOpacity style={styles.callButton}>
             <Text style={styles.callText}>☎</Text>
           </TouchableOpacity>
@@ -111,35 +121,41 @@ export default function PatientHomeScreen({ navigation }) {
       </ScrollView>
 
       <View style={styles.bottomNav}>
-        <View style={styles.navItem}>
-          <Text style={styles.activeNavIcon}>⌂</Text>
-          <Text style={styles.activeNavText}>Home</Text>
-        </View>
+  <TouchableOpacity style={styles.navItem}>
+    <Text style={styles.activeNavIcon}>⌂</Text>
+    <Text style={styles.activeNavText}>Home</Text>
+  </TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Text style={styles.navIcon}>▣</Text>
-          <Text style={styles.navText}>Requests</Text>
-        </View>
+  <TouchableOpacity
+    style={styles.navItem}
+    onPress={() => navigation.navigate("MyRequests")}
+  >
+    <Text style={styles.navIcon}>▣</Text>
+    <Text style={styles.navText}>Requests</Text>
+  </TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Text style={styles.navIcon}>☏</Text>
-          <Text style={styles.navText}>Chat</Text>
-        </View>
+  <TouchableOpacity
+  style={styles.navItem}
+  onPress={() => navigation.navigate("RealTimeChat")}
+>
+  <Text style={styles.navIcon}>☏</Text>
+  <Text style={styles.navText}>Chat</Text>
+</TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Text style={styles.navIcon}>◎</Text>
-          <Text style={styles.navText}>Profile</Text>
-        </View>
+  <TouchableOpacity
+  style={styles.navItem}
+  onPress={() => navigation.navigate("Profile")}
+>
+  <Text style={styles.navIcon}>◎</Text>
+  <Text style={styles.navText}>Profile</Text>
+</TouchableOpacity>
+</View>
       </View>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff7f7",
-  },
+  container: { flex: 1, backgroundColor: "#fff7f7" },
 
   header: {
     height: 185,
@@ -152,32 +168,38 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 28,
   },
 
-  greeting: {
-    color: "#fff",
-    fontSize: 27,
-    fontWeight: "900",
-  },
-
-  subGreeting: {
-    color: "#ffe1e5",
-    fontSize: 14,
-    marginTop: 6,
-    fontWeight: "500",
-  },
-
-  bellBox: {
-    marginTop: 2,
-  },
-
-  bell: {
-    fontSize: 24,
-    color: "#fff",
-  },
+  greeting: { color: "#fff", fontSize: 27, fontWeight: "900" },
+  subGreeting: { color: "#ffe1e5", fontSize: 14, marginTop: 6, fontWeight: "500" },
+  bellBox: { marginTop: 2 },
+  bell: { fontSize: 24, color: "#fff" },
 
   body: {
     flex: 1,
     paddingHorizontal: 18,
     marginTop: -62,
+  },
+
+  notificationCard: {
+    backgroundColor: "#E8F8EC",
+    borderLeftWidth: 5,
+    borderLeftColor: "#22C55E",
+    padding: 14,
+    borderRadius: 14,
+    marginBottom: 15,
+    elevation: 2,
+  },
+
+  notificationTitle: {
+    fontSize: 15,
+    fontWeight: "900",
+    color: "#15803D",
+  },
+
+  notificationText: {
+    marginTop: 4,
+    fontSize: 13,
+    color: "#166534",
+    fontWeight: "600",
   },
 
   requestCard: {
@@ -193,18 +215,8 @@ const styles = StyleSheet.create({
     borderColor: "#f3d4d8",
   },
 
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: "900",
-    color: "#111827",
-  },
-
-  cardSubtitle: {
-    fontSize: 14,
-    color: "#555",
-    marginTop: 8,
-    fontWeight: "500",
-  },
+  cardTitle: { fontSize: 22, fontWeight: "900", color: "#111827" },
+  cardSubtitle: { fontSize: 14, color: "#555", marginTop: 8, fontWeight: "500" },
 
   requestButton: {
     marginTop: 18,
@@ -215,11 +227,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
 
-  requestButtonText: {
-    color: "#fff",
-    fontWeight: "900",
-    fontSize: 14,
-  },
+  requestButtonText: { color: "#fff", fontWeight: "900", fontSize: 14 },
 
   bloodIconBox: {
     width: 95,
@@ -230,9 +238,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  bloodIcon: {
-    fontSize: 52,
-  },
+  bloodIcon: { fontSize: 52 },
 
   sectionHeader: {
     marginTop: 26,
@@ -242,17 +248,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "900",
-    color: "#111827",
-  },
-
-  viewAll: {
-    color: "#ef233c",
-    fontSize: 14,
-    fontWeight: "900",
-  },
+  sectionTitle: { fontSize: 20, fontWeight: "900", color: "#111827" },
+  viewAll: { color: "#ef233c", fontSize: 14, fontWeight: "900" },
 
   donorCard: {
     height: 72,
@@ -276,29 +273,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  bloodGroup: {
-    fontSize: 24,
-    fontWeight: "900",
-    color: "#111827",
-  },
+  bloodGroup: { fontSize: 24, fontWeight: "900", color: "#111827" },
 
-  donorInfo: {
-    flex: 1,
-    marginLeft: 18,
-  },
-
-  donorName: {
-    fontSize: 16,
-    fontWeight: "900",
-    color: "#111827",
-  },
-
-  distance: {
-    fontSize: 13,
-    color: "#555",
-    marginTop: 4,
-    fontWeight: "500",
-  },
+  donorInfo: { flex: 1, marginLeft: 18 },
+  donorName: { fontSize: 16, fontWeight: "900", color: "#111827" },
+  distance: { fontSize: 13, color: "#555", marginTop: 4, fontWeight: "500" },
 
   callButton: {
     width: 46,
@@ -309,11 +288,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  callText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "900",
-  },
+  callText: { color: "#fff", fontSize: 20, fontWeight: "900" },
 
   serviceTitle: {
     fontSize: 19,
@@ -341,16 +316,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
 
-  serviceIcon: {
-    fontSize: 28,
-    marginBottom: 8,
-  },
-
-  serviceText: {
-    fontSize: 13,
-    fontWeight: "800",
-    color: "#111827",
-  },
+  serviceIcon: { fontSize: 28, marginBottom: 8 },
+  serviceText: { fontSize: 13, fontWeight: "800", color: "#111827" },
 
   bottomNav: {
     position: "absolute",
@@ -365,32 +332,9 @@ const styles = StyleSheet.create({
     borderColor: "#f0dada",
   },
 
-  navItem: {
-    alignItems: "center",
-  },
-
-  activeNavIcon: {
-    color: "#ef233c",
-    fontSize: 24,
-    fontWeight: "900",
-  },
-
-  activeNavText: {
-    color: "#ef233c",
-    fontSize: 12,
-    fontWeight: "900",
-    marginTop: 2,
-  },
-
-  navIcon: {
-    color: "#777",
-    fontSize: 23,
-  },
-
-  navText: {
-    color: "#777",
-    fontSize: 12,
-    fontWeight: "700",
-    marginTop: 2,
-  },
+  navItem: { alignItems: "center" },
+  activeNavIcon: { color: "#ef233c", fontSize: 24, fontWeight: "900" },
+  activeNavText: { color: "#ef233c", fontSize: 12, fontWeight: "900", marginTop: 2 },
+  navIcon: { color: "#777", fontSize: 23 },
+  navText: { color: "#777", fontSize: 12, fontWeight: "700", marginTop: 2 },
 });

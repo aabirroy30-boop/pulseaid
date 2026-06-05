@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,15 @@ import Svg, { Path } from "react-native-svg";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SplashScreen() {
+export default function SplashScreen({ navigation }) {
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace("Login"); // or "Register"
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff6f6" />
